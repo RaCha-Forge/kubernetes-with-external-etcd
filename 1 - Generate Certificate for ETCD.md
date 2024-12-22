@@ -24,7 +24,6 @@ export PATH=$PATH:~/bin
 > We then use this CA to create other TLS certificates
 
 ```json
-{
 
 cat > ca-config.json <<EOF
 {
@@ -63,13 +62,12 @@ EOF
 
 cfssl gencert -initca ca-csr.json | cfssljson -bare ca
 
-}
+
 ```
 
 ## Step 3: Create TLS certificates
 
 ```json
-{
 
 ETCD1_IP="172.16.16.221"
 ETCD2_IP="172.16.16.222"
@@ -103,7 +101,7 @@ EOF
 
 cfssl gencert -ca=ca.pem -ca-key=ca-key.pem -config=ca-config.json -profile=etcd etcd-csr.json | cfssljson -bare etcd
 
-}
+
 ```
 
 ## Step 4: Copy the certificates to etcd nodes
