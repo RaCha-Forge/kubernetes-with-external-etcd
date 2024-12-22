@@ -31,7 +31,7 @@ Copy the respective generated certificated to respective node.
 ```bash
 mkdir -p /etc/etcd/pki
 
-cp node1-peer.pem node1-peer-key.pem node1.pem node1-key.pem client.pem client-key.pem new-etcd-root-ca.pem /etc/etcd/pki/
+cp ca.pem etcd.pem etcd-key.pem /etc/etcd/pki/
 ```
 
 -----------------------------------------------------------
@@ -40,6 +40,7 @@ cp node1-peer.pem node1-peer-key.pem node1.pem node1-key.pem client.pem client-k
 
 ```bash
 export NODE_FOR_CERT_NAME=node1
+ETCD_NAME=$(hostname -s)
 export NODE_1_IP=""
 export NODE_2_IP=""
 export NODE_3_IP=""
@@ -54,13 +55,13 @@ Description=etcd
 [Service]
 Type=notify
 ExecStart=/usr/bin/etcd \\
-  --name ${NODE_1_NAME} \\
-  --trusted-ca-file=/etc/etcd/pki/new-etcd-root-ca.pem \\
-  --cert-file=/etc/etcd/pki/${NODE_FOR_CERT_NAME}.pem \\
-  --key-file=/etc/etcd/pki/${NODE_FOR_CERT_NAME}-key.pem \\
-  --peer-trusted-ca-file=/etc/etcd/pki/new-etcd-root-ca.pem \\
-  --peer-cert-file=/etc/etcd/pki/${NODE_FOR_CERT_NAME}-peer.pem \\
-  --peer-key-file=/etc/etcd/pki/${NODE_FOR_CERT_NAME}-peer-key.pem \\
+  --name ${ETCD_NAME} \\
+  --cert-file=/etc/etcd/pki/etcd.pem \\
+  --key-file=/etc/etcd/pki/etcd-key.pem \\
+  --peer-cert-file=/etc/etcd/pki/etcd.pem \\
+  --peer-key-file=/etc/etcd/pki/etcd-key.pem \\
+  --trusted-ca-file=/etc/etcd/pki/ca.pem \\
+  --peer-trusted-ca-file=/etc/etcd/pki/ca.pem \\
   --peer-client-cert-auth \\
   --client-cert-auth \\
   --initial-advertise-peer-urls https://${NODE_1_IP}:2380 \\
@@ -83,6 +84,7 @@ systemctl enable etcd
 systemctl start etcd.service
 systemctl status etcd.service
 
+
 ```
 
 Create etcd.service file in same way mentioned above in all nodes and execute mentioned steps after creating etcd.service file
@@ -95,7 +97,14 @@ Create etcd.service file in same way mentioned above in all nodes and execute me
 In order to test the cluster, use the generated certs. Replace the NODE_IP with the specific node ip and execute the below command.
 
 ```bash
-etcdctl  --endpoints=https://${NODE_IP}:2379 --ca-file /etc/etcd/pki/new-etcd-root-ca.pem --cert-file /etc/etcd/pki/client.pem --key-file /etc/etcd/pki/client-key.pem  cluster-health
+
+ETCDCTL_API=3 etcdctl \
+  --endpoints=https://127.0.0.1:2379 \
+  --cacert=/etc/etcd/pki/ca.pem \
+  --cert=/etc/etcd/pki/etcd.pem \
+  --key=/etc/etcd/pki/etcd-key.pem \
+  member list
+
 ```
 
 If you get the below output, the cluster is working fine.
