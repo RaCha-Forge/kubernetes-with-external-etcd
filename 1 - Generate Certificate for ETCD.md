@@ -1,11 +1,10 @@
 STEPS TO GENERATE CERTIFICATES FOR ETCD CLUSTER
 
-# Step by Step
-
-    -   Step 1: Download and setup cfssl
-    -   Step 2: Create a Certificate Authority (CA)
-    -   Step 3: Create TLS certificates
-    -   Step 4: Copy the certificates to etcd nodes
+## Step by Step
+- [Step 1: Download and setup cfssl](#step-1-download-and-setup-cfssl)
+- [Step 2: Create a Certificate Authority (CA)](#step-2-create-a-certificate-authority-ca)
+- [Step 3: Create TLS certificates](#step-3-create-tls-certificates)
+- [Step 4: Copy the certificates to etcd nodes](#step-4-copy-the-certificates-to-etcd-nodes)
 
 
 
