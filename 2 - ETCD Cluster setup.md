@@ -1,10 +1,10 @@
 STEPS TO SETUP ETCD CLUSTER
 
 # Step by Step
-    -   Step 1: Download the etcd & etcdctl binary
-    -   Step 2: Copy the generated certificates
-    -   Step 3: Setup etcd as systemctl process
-    -   Step 4: Testing the cluster
+- [Step 1: Download the etcd binary](#Step 1: Download the etcd binary)
+- [Step 2: Copy the generated certificates](#Step 2: Copy the generated certificates)
+- [Step 3: Setup etcd as systemctl process](#Step 3: Setup etcd as systemctl process)
+- [Step 4: Testing the cluster](#Step 4: Testing the cluster)
 
 
 -----------------------------------------------------------
